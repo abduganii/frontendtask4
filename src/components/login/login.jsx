@@ -89,7 +89,7 @@ function Login() {
                                     id='formControlLg'
                                     required
                                     ref={password}
-                                    minLength={5}
+                                    minLength={1}
                                     type="password"
                                     placeholder="Parol"
                                     style={

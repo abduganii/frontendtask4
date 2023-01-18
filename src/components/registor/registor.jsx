@@ -79,7 +79,7 @@ function Registor() {
                                     required
                                     ref={name}
                                     type="text"
-                                    minLength={2}
+                                    minLength={1}
                                     placeholder="name"
                                     style={
                                         status === 404
@@ -111,7 +111,7 @@ function Registor() {
                                     id='formControlLg'
                                     required
                                     ref={password}
-                                    minLength={5}
+                                    minLength={1}
                                     type="password"
                                     placeholder="Parol"
                                     style={

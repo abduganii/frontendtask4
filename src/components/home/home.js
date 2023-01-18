@@ -24,7 +24,8 @@ function Home() {
     const [showNavText, setShowNavText] = useState(false);
     const [token, setToken] = useToken()
     const [data, setData] = useState()
-    const [block,setBlock] = useState(false)
+    const [block, setBlock] = useState(false)
+    const [ checked, setChecked] = useState(false)
     const sec = useRef()
     const bloc = useRef()
     
@@ -36,6 +37,9 @@ function Home() {
             if (data.user?.blocked === true) {
                 setBlock(true)
             } 
+            if (data?.status == 400) {
+                setToken(false)
+            }
         });
 
     useEffect(() => {
@@ -60,12 +64,12 @@ function Home() {
             .then((data) => {
                 if (data) {
                     if (data.seccess === true) {
-                      
                         sec.current.style.display = "block"
                     } bloc.current.style.display = "none"
-                    if (data.status === 401) {
+                    if (data.status === 401 || data?.status == 400) {
                         setToken(false)
                     }
+                 
                     else {
                         console.log(data.seccess);
                     }
@@ -86,7 +90,7 @@ function Home() {
                         bloc.current.style.display = "block"
                         sec.current.style.display = "none"
                     }
-                    if (data.status === 401) {
+                    if (data.status === 401|| data?.status == 400) {
                         setToken(false)
                     }
                     else {
@@ -110,11 +114,32 @@ function Home() {
                         console.log(data);
     
                     }
-                    if (data.status === 401) {
+                    if (data.status === 401|| data?.status == 400) {
                         setToken(false)
                     }
                     else {
                         console.log(data);
+                    }
+                }
+            });
+    }
+    const HandleDeleteAll = () => {
+        fetch(`http://localhost:7000/deleteAllUsers`, {
+            method: "Delete",
+            headers: { token: token, "Content-Type": "application/json", },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data) {
+                    if (data.seccess === true) {
+                        sec.current.style.display = "block"
+                    } bloc.current.style.display = "none"
+                    if (data.status === 401 || data?.status == 400) {
+                        setToken(false)
+                    }
+                 
+                    else {
+                        console.log(data.seccess);
                     }
                 }
             });
@@ -156,7 +181,9 @@ function Home() {
                     <MDBTableHead light>
                         <tr>
                         <th scope='col'>
-                            <MDBCheckbox></MDBCheckbox>
+                                    <MDBCheckbox onChange={(e) => {
+                                        setChecked(e.target.checked)
+                            }}></MDBCheckbox>
                         </th>
                         <th scope='col'>id</th>
                         <th scope='col'>name</th>
@@ -164,7 +191,11 @@ function Home() {
                         <th scope='col'>login time</th>
                         <th scope='col'>registration time</th>
                         <th scope='col'>blocked</th>
-                        <th scope='col'>icon</th>
+                                <th scope='col'>
+                                    {
+                                        checked === true ? <><Button  variant="danger">Blocked</Button><Button onClick={HandleDeleteAll} variant="outline-danger" >Delete</Button></> : ""
+                                    }
+                                </th>
                         </tr>
                     </MDBTableHead>
                     <MDBTableBody>
@@ -173,7 +204,7 @@ function Home() {
                                 
                         <tr>
                         <th scope='col'>
-                            <MDBCheckbox></MDBCheckbox>
+                            <MDBCheckbox checked={checked}></MDBCheckbox>
                         </th>
                         <td>{e?._id}</td>
                         <td>{ e?.name}</td>
