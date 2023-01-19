@@ -27,7 +27,7 @@ function Registor() {
         e.preventDefault();
         (async () => {
             try {
-                const res = await fetch("http://localhost:7000/auth/registor", {
+                const res = await fetch("https://backend-bkgm.onrender.com/auth/registor", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

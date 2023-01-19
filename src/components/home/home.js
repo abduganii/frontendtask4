@@ -29,7 +29,7 @@ function Home() {
     const sec = useRef()
     const bloc = useRef()
     
-    fetch(`http://localhost:7000/getme`, {
+    fetch(`https://backend-bkgm.onrender.com/getme`, {
         headers: { token: token, "Content-Type": "application/json", },
     })
         .then((res) => res.json())
@@ -43,7 +43,7 @@ function Home() {
         });
 
     useEffect(() => {
-        fetch("http://localhost:7000/users", {
+        fetch("https://backend-bkgm.onrender.com/users", {
             headers: { token: token, "Content-Type": "application/json", },
         })
         .then(res => res.json())
@@ -56,7 +56,7 @@ function Home() {
     const HandleDelete = (e) => {
       
         const id = e.target.dataset.id;
-        fetch(`http://localhost:7000/deleteUsers/${id}`, {
+        fetch(`https://backend-bkgm.onrender.com/deleteUsers/${id}`, {
             method: "Delete",
             headers: { token: token, "Content-Type": "application/json", },
         })
@@ -79,7 +79,7 @@ function Home() {
     const HandleBlack = (e) => {
         const id = e.target.dataset.id;
       
-        fetch(`http://localhost:7000/Blockusers/${id}`, {
+        fetch(`https://backend-bkgm.onrender.com/Blockusers/${id}`, {
             method: "Put",
             headers: { token: token, "Content-Type": "application/json", },
         })
@@ -103,7 +103,7 @@ function Home() {
     const HandleUnBlack = (e) => {
         const id = e.target.dataset.id;
         console.log(id)
-        fetch(`http://localhost:7000/unBlockusers/${id}`, {
+        fetch(`https://backend-bkgm.onrender.com/unBlockusers/${id}`, {
             method: "Put",
             headers: { token: token, "Content-Type": "application/json", },
         })
@@ -123,8 +123,31 @@ function Home() {
                 }
             });
     }
+    const HandleBlackAll = (e) => {
+      
+        fetch(`https://backend-bkgm.onrender.com/BlockAllusers`, {
+            method: "Put",
+            headers: { token: token, "Content-Type": "application/json", },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data) {
+                    if (data.success) {
+                        bloc.current.style.display = "block"
+                        sec.current.style.display = "none"
+                    }
+                    if (data.status === 401|| data?.status == 400) {
+                        setToken(false)
+                    }
+                    else {
+    
+                        console.log(data);
+                    }
+                }
+            });
+    }
     const HandleDeleteAll = () => {
-        fetch(`http://localhost:7000/deleteAllUsers`, {
+        fetch(`https://backend-bkgm.onrender.com/deleteAllUsers`, {
             method: "Delete",
             headers: { token: token, "Content-Type": "application/json", },
         })
@@ -193,7 +216,7 @@ function Home() {
                         <th scope='col'>blocked</th>
                                 <th scope='col'>
                                     {
-                                        checked === true ? <><Button  variant="danger">Blocked</Button><Button onClick={HandleDeleteAll} variant="outline-danger" >Delete</Button></> : ""
+                                        checked === true ? <><Button onClick={HandleBlackAll}  variant="danger">Blocked</Button><Button onClick={HandleDeleteAll} variant="outline-danger" >Delete</Button></> : ""
                                     }
                                 </th>
                         </tr>
@@ -231,12 +254,12 @@ function Home() {
                 
             }
              
-        <Alert ref={sec}  style={{display:"none", width:"100%", position:"absolute", left:0,bottom:0} } key={"danger"} variant={"danger"}>
-            User Deleted
+             <Alert ref={sec} style={{ display: "none", width: "100%", position: "absolute", left: 0, bottom: 0 }} key={"seccses"} variant={"danger"}>
+                User Deleted
             </Alert>
-            <Alert ref={bloc}  style={{display:"none", width:"100%", position:"absolute", left:0,bottom:0} } key={"danger"} variant={"danger"}>
-            User Blocked
-        </Alert>
+            <Alert ref={bloc} style={{ display: "none", width: "100%", position: "absolute", left: 0, bottom: 0 }} key={"danger"} variant={"danger"}>
+                User Blocked
+            </Alert>
        
        </>
     );

@@ -14,6 +14,7 @@ import {
     from 'mdb-react-ui-kit';
 
 import useToken from '../../Hooks/useToken.js';
+import { Alert } from 'react-bootstrap';
 
 
 function Login() {
@@ -26,7 +27,7 @@ function Login() {
         e.preventDefault();
         (async () => {
             try {
-                const res = await fetch("http://localhost:7000/auth/login", {
+                const res = await fetch("https://backend-bkgm.onrender.com/auth/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -46,6 +47,7 @@ function Login() {
         })();
 
     };
+    console.log(status)
 
     return (
         <div className="container login_container">
@@ -123,6 +125,13 @@ function Login() {
                 </MDBCard>
 
             </MDBContainer>
+
+            {status == 404 ? <Alert style={{ width: "100%", position: "absolute", left: 0, bottom: 0 }} key={"danger"} variant={"danger"}>
+                Not authentication
+            </Alert> : ""
+
+            }
+
         </div>
     );
 }
