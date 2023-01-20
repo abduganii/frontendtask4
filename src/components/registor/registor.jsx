@@ -14,6 +14,7 @@ import {
     MDBInput
 }
     from 'mdb-react-ui-kit';
+import { Alert } from 'react-bootstrap';
 
 function Registor() {
     const [, setToken] = useToken();
@@ -139,6 +140,9 @@ function Registor() {
                 </MDBCard>
 
             </MDBContainer>
+            {status == 404 ? <Alert style={{ width: "100%", position: "absolute", left: 0, bottom: 0 }} key={"danger"} variant={"danger"}>
+                email is already authorized
+            </Alert> : ""}
         </div>
     );
 }
